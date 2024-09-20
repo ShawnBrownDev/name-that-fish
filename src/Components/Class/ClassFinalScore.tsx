@@ -1,18 +1,15 @@
-import { Component } from "react";
+import "./styles/final-score.css";
 
-interface ClassFinalScoreProps {
-  score: number;
-}
+const correctCount = 0;
+const totalCount = 0;
 
-export class ClassFinalScore extends Component<ClassFinalScoreProps> {
-  render() {
-    const { score } = this.props;
-
-    return (
-      <div id="final-score">
-        <h2>Final Score: {score}</h2>
-        <p>Thank you for playing!</p>
-      </div>
-    );
-  }
-}
+export const ClassFinalScore = () => (
+  <div id="final-score">
+    <h1>Your Final Score Was</h1>
+    <div id="score">
+      <p>{correctCount}</p>
+      <hr />
+      <p>{totalCount}</p>
+    </div>
+  </div>
+);

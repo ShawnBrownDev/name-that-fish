@@ -43,7 +43,7 @@ To get this project setup, you should:
 - [ ] Keep your types clean and in a logical location
 - [ ] Prop Types for components should be colocated with their components
 - [ ] Shared types should live in a file that says `types` somewhere in it's name
-  - [ ] example: `types.ts` should work fine
+- [ ] example: `types.ts` should work fine
 - [ ] Unshared types should live in the component they are used in
 
 ### Assignment Specific Requirements

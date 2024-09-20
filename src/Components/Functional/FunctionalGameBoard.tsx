@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import "./styles/game-board.css";
-import { Images } from "../../assets/Images";
 
-const initialFishes = [
-  { name: "trout", url: Images.trout },
-  { name: "salmon", url: Images.salmon },
-  { name: "tuna", url: Images.tuna },
-  { name: "shark", url: Images.shark },
-];
+interface Fish {
+  name: string;
+  url: string;
+}
 
 type FunctionalGameBoardProps = {
   updateScore: (points: number, isCorrect: boolean, currentFish: string) => void;
-  handleGameOver: () => void;
+  currentFish: Fish;
 };
 
-export function FunctionalGameBoard({ updateScore, handleGameOver }: FunctionalGameBoardProps) {
+export function FunctionalGameBoard({
+  updateScore,
+  currentFish,
+}: FunctionalGameBoardProps) {
   const [guess, setGuess] = useState("");
-  const [currentFishIndex, setCurrentFishIndex] = useState(0);
-  const nextFishToName = initialFishes[currentFishIndex];
+  const [feedback, setFeedback] = useState<null | string>(null);
+  const [hasGuessed, setHasGuessed] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGuess(event.target.value);
@@ -26,36 +26,52 @@ export function FunctionalGameBoard({ updateScore, handleGameOver }: FunctionalG
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (guess.toLowerCase() === nextFishToName.name.toLowerCase()) {
-      alert("Correct!");
-      updateScore(1, true, nextFishToName.name);
-      if (currentFishIndex + 1 < initialFishes.length) {
-        setCurrentFishIndex((prevIndex) => prevIndex + 1);
-      } else {
-        handleGameOver();
-      }
-    } else {
-      alert("Try again!");
-      updateScore(0, false, nextFishToName.name);
+    if (hasGuessed) {
+      return;
     }
+
+    const isCorrect =
+      guess.trim().toLowerCase() === currentFish.name.toLowerCase();
+
+    if (isCorrect) {
+      setFeedback("✅ Correct!");
+      updateScore(1, true, currentFish.name);
+    } else {
+      setFeedback("🔻 Incorrect!");
+      updateScore(0, false, currentFish.name);
+    }
+
+    setHasGuessed(true);
     setGuess("");
+
+    setTimeout(() => {
+      setFeedback(null);
+      setHasGuessed(false); 
+    }, 2000);
   };
 
   return (
     <div id="game-board">
       <div id="fish-container">
-        <img src={nextFishToName.url} alt={nextFishToName.name} />
+        <img src={currentFish.url} alt={currentFish.name} />
       </div>
       <form id="fish-guess-form" onSubmit={handleSubmit}>
         <label htmlFor="fish-guess">What kind of fish is this?</label>
         <input
           type="text"
+          id="fish-guess"
           name="fish-guess"
           value={guess}
           onChange={handleInputChange}
+          required
+
         />
-        <input type="submit" value="Submit" />
+        <input
+          type="submit"
+          value="Submit"
+        />
       </form>
+      {feedback && <div className="feedback">{feedback}</div>}
     </div>
   );
 }

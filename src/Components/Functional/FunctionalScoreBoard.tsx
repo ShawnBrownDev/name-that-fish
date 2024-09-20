@@ -1,4 +1,4 @@
-import "./styles/score-board.css";
+import { Component } from "react";
 
 type FunctionalScoreBoardProps = {
   incorrectCount: number;
@@ -6,11 +6,10 @@ type FunctionalScoreBoardProps = {
   answersLeft: string[];
 };
 
-export function FunctionalScoreBoard({
-  incorrectCount,
-  correctCount,
-  answersLeft,
-}: FunctionalScoreBoardProps) {
+export class FunctionalScoreBoard extends Component<FunctionalScoreBoardProps> {
+  render() {
+    const { incorrectCount, correctCount, answersLeft } = this.props;
+
   return (
     <div id="score-board">
       <div>Incorrect 🔻: {incorrectCount}</div>
@@ -23,5 +22,6 @@ export function FunctionalScoreBoard({
       </div>
       <div>Correct ✅: {correctCount}</div>
     </div>
-  );
+    );
+  }
 }
