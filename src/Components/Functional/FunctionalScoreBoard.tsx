@@ -4,6 +4,7 @@ type FunctionalScoreBoardProps = {
   incorrectCount: number;
   correctCount: number;
   answersLeft: string[];
+  score: number; 
 };
 
 export class FunctionalScoreBoard extends Component<FunctionalScoreBoardProps> {

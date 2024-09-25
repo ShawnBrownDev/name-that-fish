@@ -5,6 +5,7 @@ interface ClassScoreBoardProps {
   incorrectCount: number;
   correctCount: number;
   answersLeft: string[];
+  score: number;
 }
 
 export class ClassScoreBoard extends Component<ClassScoreBoardProps> {

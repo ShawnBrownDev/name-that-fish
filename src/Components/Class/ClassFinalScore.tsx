@@ -1,9 +1,11 @@
 import "./styles/final-score.css";
 
-const correctCount = 0;
-const totalCount = 0;
+type ClassFinalScoreProps = {
+  correctCount: number;
+  totalCount: number;
+};
 
-export const ClassFinalScore = () => (
+export const ClassFinalScore = ({ correctCount, totalCount }: ClassFinalScoreProps) => (
   <div id="final-score">
     <h1>Your Final Score Was</h1>
     <div id="score">
