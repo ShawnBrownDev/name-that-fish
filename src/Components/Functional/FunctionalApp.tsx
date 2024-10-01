@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FunctionalGameBoard } from "./FunctionalGameBoard";
-import { FunctionalScoreBoard } from "./FunctionalScoreBoard";
+import FunctionalScoreBoard from "./FunctionalScoreBoard";
 import { FunctionalFinalScore } from "./FunctionalFinalScore";
 import { Images } from "../../assets/Images";
 

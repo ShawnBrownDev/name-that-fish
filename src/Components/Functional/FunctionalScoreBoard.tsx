@@ -1,16 +1,13 @@
-import { Component } from "react";
+import React from "react";
 
 type FunctionalScoreBoardProps = {
   incorrectCount: number;
   correctCount: number;
   answersLeft: string[];
-  score: number; 
+  score: number;
 };
 
-export class FunctionalScoreBoard extends Component<FunctionalScoreBoardProps> {
-  render() {
-    const { incorrectCount, correctCount, answersLeft } = this.props;
-
+const FunctionalScoreBoard: React.FC<FunctionalScoreBoardProps> = ({ incorrectCount, correctCount, answersLeft }) => {
   return (
     <div id="score-board">
       <div>Incorrect 🔻: {incorrectCount}</div>
@@ -23,6 +20,7 @@ export class FunctionalScoreBoard extends Component<FunctionalScoreBoardProps> {
       </div>
       <div>Correct ✅: {correctCount}</div>
     </div>
-    );
-  }
-}
+  );
+};
+
+export default FunctionalScoreBoard; 

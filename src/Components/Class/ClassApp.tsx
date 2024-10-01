@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component } from "react";
 import { ClassGameBoard } from "./ClassGameBoard";
 import { ClassScoreBoard } from "./ClassScoreBoard";
 import { ClassFinalScore } from "./ClassFinalScore";
@@ -18,50 +18,76 @@ const initialFishes: Fish[] = [
 
 const pointsPerCorrectAnswer = 1;
 
-export function ClassApp() {
-  const [incorrectCount, setIncorrectCount] = useState<number>(0);
-  const [correctCount, setCorrectCount] = useState<number>(0);
-  
-  const score = correctCount * pointsPerCorrectAnswer;
-  
-  const totalAnswered = correctCount + incorrectCount;
-  const isGameOver = totalAnswered >= initialFishes.length;
+interface ClassAppState {
+  incorrectCount: number;
+  correctCount: number;
+}
 
-  const answersLeft = initialFishes.slice(totalAnswered).map((fish: Fish) => fish.name);
-  const currentFish = initialFishes[totalAnswered];
-
-
-  const updateScore = (_points: number, isCorrect: boolean, fishName: string) => {
-    console.log(`Guess made for: ${fishName}, Correct: ${isCorrect}`);
-
-  if (isCorrect){
-    setCorrectCount((prev: number) => prev + 1);
-  } else {
-    setIncorrectCount((prev: number) => prev + 1);
+export class ClassApp extends Component<Record<string, never>, ClassAppState> {
+  constructor(props: Record<string, never>) {
+    super(props);
+    this.state = {
+      incorrectCount: 0,
+      correctCount: 0,
+    };
   }
-};
 
-  return (
-    <>
-      <ClassScoreBoard
-           incorrectCount={incorrectCount}
-           correctCount={correctCount}
-           answersLeft={answersLeft}
-           score={score}
-         />
-         {!isGameOver && currentFish && (
-           <ClassGameBoard
-             updateScore={updateScore}
-             currentFish={currentFish}
-           />
-         )}
-         {isGameOver && (
-           <ClassFinalScore
-             correctCount={correctCount}
-             totalCount={correctCount + incorrectCount}
-           />
-         )}
-       </>
-     );
-   }
-   
+  getScore = () => {
+    return this.state.correctCount * pointsPerCorrectAnswer;
+  };
+
+  getTotalAnswered = () => {
+    return this.state.correctCount + this.state.incorrectCount;
+  };
+
+  getAnswersLeft = () => {
+    return initialFishes.slice(this.getTotalAnswered()).map((fish: Fish) => fish.name);
+  };
+
+  updateScore = (_points: number, isCorrect: boolean, fishName: string) => {
+    console.log(`Guess made for: ${fishName}, Correct: ${isCorrect}`);
+    
+    if (isCorrect) {
+      this.setState((prevState) => ({
+        correctCount: prevState.correctCount + 1,
+      }));
+    } else {
+      this.setState((prevState) => ({
+        incorrectCount: prevState.incorrectCount + 1,
+      }));
+    }
+  };
+
+  render() {
+    const { incorrectCount, correctCount } = this.state;
+    const totalAnswered = this.getTotalAnswered();
+    const isGameOver = totalAnswered >= initialFishes.length;
+    const answersLeft = this.getAnswersLeft();
+    const currentFish = initialFishes[totalAnswered];
+    const score = this.getScore();
+
+    return (
+      <>
+        <ClassScoreBoard
+          incorrectCount={incorrectCount}
+          correctCount={correctCount}
+          answersLeft={answersLeft}
+          score={score}
+        />
+        {!isGameOver && currentFish && (
+          <ClassGameBoard
+            updateScore={this.updateScore}
+            currentFish={currentFish}
+          />
+        )}
+        {isGameOver && (
+          <ClassFinalScore
+            correctCount={correctCount}
+            totalCount={correctCount + incorrectCount}
+          />
+        )}
+      </>
+    );
+  }
+}
+
